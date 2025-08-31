@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
+require('dotenv').config();
 app.use(express.json());
 // import router
 const peopleRouter = require('./routes/people');
@@ -10,8 +11,8 @@ app.use('/api/people', peopleRouter);
 
 const { people, product } = require('./data');
 
-const logger = require('./logger');
-const authorize = require('./authorize');
+const logger = require('./middleware/logger');
+const authorize = require('./middleware/authorize');
 
 app.use('/login',express.static('./public'));
 app.use('/login',express.urlencoded({ extended: false }));
@@ -88,6 +89,6 @@ app.post('/login', (req, res) => {
 });
 
 // Start server
-app.listen(5000, () => {
-  console.log('Server running on http://localhost:5000');
+app.listen(process.env.PORT , () => {
+  console.log(`Server is listening on port ${process.env.PORT}`);
 });
